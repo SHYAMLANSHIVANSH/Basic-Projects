@@ -31,8 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.listall.database.DataRepository
+import com.example.listall.theme.AllThemes
 
 @Composable
 fun CustomDrawerItem(
@@ -70,7 +73,12 @@ fun DrawerCustom(
     navigateToStar: () -> Unit,
     navigateToTheme: () -> Unit
 ){
-    NavigationRail() {
+    val ThemeData = DataRepository()
+    val context = LocalContext.current
+    val ThemeBackground = ThemeData.ListTheme(context)
+    val ThemeId = ThemeBackground?.id ?: 1
+    val ThemeSearch = AllThemes().Themes.get(ThemeId.toInt())
+    NavigationRail(containerColor = ThemeSearch.Color, contentColor = ThemeSearch.contentColor) {
         Spacer(Modifier.weight(1f))
         CustomDrawerItem(
             selected = currentRoute == AllDestinations.HOME_ROUTE,
@@ -80,10 +88,11 @@ fun DrawerCustom(
             icon = {
                 Icon(
                     Icons.Default.Home,
-                    contentDescription = stringResource(R.string.home_icon)
+                    contentDescription = stringResource(R.string.home_icon),
+                    tint = ThemeSearch.contentColor
                 )
             },
-            label = {Text("Home")}
+            label = {Text("Home", color = ThemeSearch.contentColor)}
         )
 
         Spacer(Modifier.weight(1f))
@@ -96,10 +105,11 @@ fun DrawerCustom(
             icon = {
                 Icon(
                     Icons.Default.Star,
-                    contentDescription = stringResource(R.string.starTask_icon)
+                    contentDescription = stringResource(R.string.starTask_icon),
+                    tint = ThemeSearch.contentColor
                 )
             },
-            label = {Text("ToDo")}
+            label = {Text("ToDo", color = ThemeSearch.contentColor)}
         )
         Spacer(Modifier.weight(1f))
 
@@ -111,10 +121,11 @@ fun DrawerCustom(
             icon = {
                 Icon(
                     Icons.Default.Create,
-                    contentDescription = stringResource(R.string.theme_icon)
+                    contentDescription = stringResource(R.string.theme_icon),
+                    tint = ThemeSearch.contentColor
                 )
             },
-            label = {Text("Theme")}
+            label = {Text("Theme", color = ThemeSearch.contentColor)}
         )
         Spacer(Modifier.weight(1f))
     }

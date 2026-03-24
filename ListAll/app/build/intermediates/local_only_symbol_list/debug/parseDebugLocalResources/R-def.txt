@@ -13,6 +13,7 @@ mipmap ic_launcher
 mipmap ic_launcher_round
 string app_name
 string home_icon
+string selected_theme
 string starTask_icon
 string theme_icon
 style Theme.ListAll

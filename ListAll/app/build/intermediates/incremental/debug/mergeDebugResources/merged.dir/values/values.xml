@@ -250,6 +250,7 @@
     <string name="range_end">"Range end"</string>
     <string name="range_start">"Range start"</string>
     <string name="selected">Selected</string>
+    <string name="selected_theme">This is the theme you selected</string>
     <string name="snackbar_pane_title">Alert</string>
     <string name="starTask_icon">All your completed tasks will be here</string>
     <string name="state_empty">Empty</string>

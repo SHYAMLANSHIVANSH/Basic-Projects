@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <string name="app_name">ListAll</string>
     <string name="home_icon">It is an home icon where you will find all your uncompleted tasks</string>
+    <string name="selected_theme">This is the theme you selected</string>
     <string name="starTask_icon">All your completed tasks will be here</string>
     <string name="theme_icon">This is an button to go to the themes section</string>
     <style name="Theme.ListAll" parent="android:Theme.Material.Light.NoActionBar"/>

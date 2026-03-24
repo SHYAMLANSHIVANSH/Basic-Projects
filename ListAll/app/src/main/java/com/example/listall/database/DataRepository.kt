@@ -2,7 +2,7 @@ package com.example.listall.database
 
 import android.content.Context
 
-class DataRepository {
+class DataRepository() {
     // For the star data
     fun InsertStar(Values : DataType, context: Context){
         val db = Database(context)
@@ -12,7 +12,7 @@ class DataRepository {
         val db = Database(context)
         db.DeleteStar(id)
     }
-    fun ListStar(context : Context): Array<DataType>{
+    fun ListStar(context : Context): Array<TaskReturnDataType>{
         val db = Database(context)
         val list = db.GetStar()
         return list
@@ -26,11 +26,11 @@ class DataRepository {
         val db = Database(context)
         db.Delete(id)
     }
-    fun Update(Values : DataType, context: Context){
+    fun Update(Id : Long,Values : DataType, context: Context){
         val db = Database(context)
-        db.Update(Values)
+        db.Update(Id,Values)
     }
-    fun List(context : Context): Array<DataType>{
+    fun List(context : Context): Array<TaskReturnDataType>{
         val db = Database(context)
         val list = db.Get()
         return list

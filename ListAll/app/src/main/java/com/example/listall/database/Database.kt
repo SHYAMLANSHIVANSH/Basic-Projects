@@ -14,7 +14,7 @@ private const val Database_TaskTableName = "ListData"
 
 private const val Database_StarTableName = "StarData"
 
-private const val Database_ThemeTableName = "StarData"
+private const val Database_ThemeTableName = "ThemeData"
 
 private const val Colorid = "id"
 class Database(context: Context) : SQLiteOpenHelper(context, Database_Name, null, Version) {
@@ -60,12 +60,12 @@ class Database(context: Context) : SQLiteOpenHelper(context, Database_Name, null
         db.insert(Database_TaskTableName, null, value)
         db.close()
     }
-    fun Update(Values: DataType){
+    fun Update(Id : Long,Values: DataType){
         val db = this.writableDatabase
         val value = ContentValues().apply {
             put(task, Values.Task )
         }
-        db.update(Database_TaskTableName, value,"ID = ?", arrayOf(Values.id.toString())
+        db.update(Database_TaskTableName, value,"ID = ?", arrayOf(Id.toString())
         )
         db.close()
     }
@@ -74,7 +74,7 @@ class Database(context: Context) : SQLiteOpenHelper(context, Database_Name, null
         db.delete(Database_TaskTableName, "ID = ?", arrayOf(id.toString()))
         db.close()
     }
-    fun Get(): Array<DataType> {
+    fun Get(): Array<TaskReturnDataType> {
         val db = this.readableDatabase
         val cursor = db.query(
             Database_TaskTableName,
@@ -86,13 +86,13 @@ class Database(context: Context) : SQLiteOpenHelper(context, Database_Name, null
             null
         )
 
-        val dataList = mutableListOf<DataType>()
+        val dataList = mutableListOf<TaskReturnDataType>()
 
         if (cursor.moveToFirst()) {
             do {
                 val itemId = cursor.getLong(cursor.getColumnIndexOrThrow(id))
                 val itemTask = cursor.getString(cursor.getColumnIndexOrThrow(task))
-                val dataItem = DataType(itemId, itemTask)
+                val dataItem = TaskReturnDataType(itemTask, itemId)
                 dataList.add(dataItem)
             } while (cursor.moveToNext())
         }
@@ -151,7 +151,7 @@ class Database(context: Context) : SQLiteOpenHelper(context, Database_Name, null
         db.delete(Database_StarTableName, "ID = ?", arrayOf(id.toString()))
         db.close()
     }
-    fun GetStar(): Array<DataType> {
+    fun GetStar(): Array<TaskReturnDataType> {
         val db = this.readableDatabase
         val cursor = db.query(
             Database_StarTableName,
@@ -163,13 +163,13 @@ class Database(context: Context) : SQLiteOpenHelper(context, Database_Name, null
             null
         )
 
-        val dataList = mutableListOf<DataType>()
+        val dataList = mutableListOf<TaskReturnDataType>()
 
         if (cursor.moveToFirst()) {
             do {
                 val itemId = cursor.getLong(cursor.getColumnIndexOrThrow(id))
                 val itemTask = cursor.getString(cursor.getColumnIndexOrThrow(task))
-                val dataItem = DataType(itemId, itemTask)
+                val dataItem = TaskReturnDataType(itemTask, itemId)
                 dataList.add(dataItem)
             } while (cursor.moveToNext())
         }

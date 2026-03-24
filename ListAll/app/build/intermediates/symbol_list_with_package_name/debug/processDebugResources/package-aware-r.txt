@@ -316,6 +316,7 @@ string not_selected
 string range_end
 string range_start
 string selected
+string selected_theme
 string snackbar_pane_title
 string starTask_icon
 string state_empty
