@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.listit.ui.theme.ListItTheme
 import com.example.listit.ui.uiThemes.UIThemes
 import com.example.listit.utils.ItemUI
+import com.example.listit.utils.TestProfilePictureFunction
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

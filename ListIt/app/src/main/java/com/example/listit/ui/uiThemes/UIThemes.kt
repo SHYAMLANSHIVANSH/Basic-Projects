@@ -19,6 +19,7 @@ import com.example.listit.data.ThemeRepository
 import com.example.listit.di.AppModule
 import com.example.listit.utils.ThemeColor
 import com.example.listit.utils.ThemeItem
+import com.example.listit.utils.getTheCurrentTheme
 
 @Preview
 @Composable
@@ -31,17 +32,17 @@ fun UIThemes() {
     val LoadThemes = getAllThemesList().LoadThemesList
     val theme = ThemeItem()
 
-    val currentTheme = viewModel.colorName.collectAsState()
+    val currentTheme = getTheCurrentTheme(context)
 
     LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Adaptive(200.dp),
+        columns = StaggeredGridCells.Adaptive(240.dp),
         verticalItemSpacing = 30.dp,
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         items(LoadThemes){themes->
             theme.ThemeItemCardBox(
                 color = themes,
-                currentTheme = currentTheme.value,
+                currentTheme = currentTheme,
                 onClick = {
                     viewModel.saveTheme(themes)
                 }

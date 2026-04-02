@@ -2,6 +2,7 @@ package com.example.listit.utils
 
 import android.R.attr.onClick
 import android.R.attr.text
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,12 +18,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,21 +37,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.listit.R
 
-class ItemUI {
+class ItemUI() {
     @Composable
-    fun ItemUIToShow(modifier: Modifier) {
+    fun ItemUIToShow(
+        modifier: Modifier,
+        currentTheme : String
+    ) {
+        val ThemeColorCurrent = ThemeColor(currentTheme)
         var showAllTextOptions by remember { mutableStateOf(false) }
         Row(
             modifier = modifier
                 .fillMaxWidth()
+                .clip(RoundedCornerShape(20.dp))
                 .background(
-                    if (isSystemInDarkTheme()) Color.White
-                    else Color.White
+                    ThemeColorCurrent.containerColor
                 )
                 .clickable(
                     onClick = {
@@ -63,16 +71,22 @@ class ItemUI {
                verticalArrangement = Arrangement.Center
            ) {
                 Text(
-                    text = "Title"
+                    text = "Title",
+                    color = ThemeColorCurrent.contentColor
                 )
                 Text(
-                    text = "This is a text"
+                    text = "This is a text",
+                    color = ThemeColorCurrent.contentColor
                 )
             }
            if(showAllTextOptions){
                Spacer(Modifier.weight(1f))
                Row() {
                    IconButton(
+                       colors = IconButtonDefaults.iconButtonColors(
+                           contentColor = ThemeColorCurrent.contentColor,
+                           containerColor = ThemeColorCurrent.containerColor
+                       ),
                        onClick = {}
                    ) {
                        Icon(
@@ -81,6 +95,10 @@ class ItemUI {
                        )
                    }
                    IconButton(
+                       colors = IconButtonDefaults.iconButtonColors(
+                           contentColor = ThemeColorCurrent.contentColor,
+                           containerColor = ThemeColorCurrent.containerColor
+                       ),
                        onClick = {}
                    ) {
                        Icon(
@@ -98,6 +116,7 @@ class ItemUI {
 @Preview
 @Composable
 fun TestProfilePictureFunction(ItemUI : ItemUI = ItemUI()){
-    ItemUI.ItemUIToShow(modifier = Modifier.fillMaxWidth())
+    val context = LocalContext.current
+    ItemUI.ItemUIToShow(modifier = Modifier.fillMaxWidth(), getTheCurrentTheme(context), )
 
 }
