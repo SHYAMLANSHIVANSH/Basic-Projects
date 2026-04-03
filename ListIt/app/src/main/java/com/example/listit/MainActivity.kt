@@ -13,10 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.listit.di.AppModule
+import com.example.listit.ui.home.AddItems
+import com.example.listit.ui.home.Home
 import com.example.listit.ui.theme.ListItTheme
 import com.example.listit.ui.uiThemes.UIThemes
 import com.example.listit.utils.ItemUI
-import com.example.listit.utils.TestProfilePictureFunction
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +28,7 @@ class MainActivity : ComponentActivity() {
             ListItTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-                        UIThemes()
+                        Home(AppModule.provideLocalDataViewModel(applicationContext))
                     }
                 }
             }

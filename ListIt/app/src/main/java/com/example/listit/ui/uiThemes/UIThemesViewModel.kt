@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 class UIThemesViewModel(
     private val repository: ThemeRepository
 ) : ViewModel() {
-
     val colorName : StateFlow<String> = repository.themeColor
         .stateIn(
             scope = viewModelScope,

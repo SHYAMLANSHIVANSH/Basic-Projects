@@ -42,13 +42,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.listit.R
+import com.example.listit.ui.home.DeleteTask
+import com.example.listit.ui.home.HomeViewModel
 
 class ItemUI() {
     @Composable
     fun ItemUIToShow(
         modifier: Modifier,
-        currentTheme : String
+        currentTheme : String,
+        title: String,
+        task: String?,
+        id : Int,
+        viewModel : HomeViewModel
     ) {
+        val context = LocalContext.current
         val ThemeColorCurrent = ThemeColor(currentTheme)
         var showAllTextOptions by remember { mutableStateOf(false) }
         Row(
@@ -71,13 +78,17 @@ class ItemUI() {
                verticalArrangement = Arrangement.Center
            ) {
                 Text(
-                    text = "Title",
+                    text = title,
                     color = ThemeColorCurrent.contentColor
                 )
-                Text(
-                    text = "This is a text",
-                    color = ThemeColorCurrent.contentColor
-                )
+                if(showAllTextOptions){
+                    if (task != null) {
+                        Text(
+                            text = task,
+                            color = ThemeColorCurrent.contentColor
+                        )
+                    }
+                }
             }
            if(showAllTextOptions){
                Spacer(Modifier.weight(1f))
@@ -99,7 +110,9 @@ class ItemUI() {
                            contentColor = ThemeColorCurrent.contentColor,
                            containerColor = ThemeColorCurrent.containerColor
                        ),
-                       onClick = {}
+                       onClick = {
+                           DeleteTask(context = context, Id = id, viewModel = viewModel)
+                       }
                    ) {
                        Icon(
                            Icons.Default.Delete,
@@ -110,13 +123,4 @@ class ItemUI() {
            }
         }
     }
-}
-
-
-@Preview
-@Composable
-fun TestProfilePictureFunction(ItemUI : ItemUI = ItemUI()){
-    val context = LocalContext.current
-    ItemUI.ItemUIToShow(modifier = Modifier.fillMaxWidth(), getTheCurrentTheme(context), )
-
 }

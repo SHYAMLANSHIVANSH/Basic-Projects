@@ -1,6 +1,8 @@
 package com.example.listit.ui.home
 
 import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.listit.data.LocalDataRepository
@@ -18,10 +20,19 @@ class HomeViewModel(
     private val _task = MutableStateFlow<List<localDataStoreClassReturn>>(emptyList())
     val task : StateFlow<List<localDataStoreClassReturn>> = _task
 
+    val isLoading : MutableStateFlow<Boolean> = MutableStateFlow(true)
+
     fun loadTasks(context: Context){
         viewModelScope.launch {
-            val data = repository.TaskGetter(context)
-            _task.value = data
+            try{
+                isLoading.value = true
+                val data = repository.TaskGetter(context)
+                _task.value = data
+            }catch (ex : Exception){
+                Log.d("Loading Error", "This the is error in the loading")
+            } finally {
+                isLoading.value = false
+            }
         }
     }
 
