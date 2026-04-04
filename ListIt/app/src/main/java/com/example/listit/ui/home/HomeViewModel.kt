@@ -9,6 +9,8 @@ import com.example.listit.data.LocalDataRepository
 import com.example.listit.data.ThemeRepository
 import com.example.listit.data.localDataStoreClass
 import com.example.listit.data.localDataStoreClassReturn
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,7 +25,7 @@ class HomeViewModel(
     val isLoading : MutableStateFlow<Boolean> = MutableStateFlow(true)
 
     fun loadTasks(context: Context){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             try{
                 isLoading.value = true
                 val data = repository.TaskGetter(context)
@@ -31,27 +33,28 @@ class HomeViewModel(
             }catch (ex : Exception){
                 Log.d("Loading Error", "This the is error in the loading")
             } finally {
+                delay(600)
                 isLoading.value = false
             }
         }
     }
 
     fun addTasks(context: Context, tasks : localDataStoreClass){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.TaskAdder(context, tasks)
             loadTasks(context)
         }
     }
 
     fun deleteTasks(context: Context, id : Int){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.TaskDeleter(context, id)
             loadTasks(context)
         }
     }
 
     fun updateTasks(context: Context, tasks : localDataStoreClassReturn){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.TaskUpdater(context, tasks)
             loadTasks(context)
         }

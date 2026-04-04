@@ -1,5 +1,6 @@
 package com.example.listit.ui.home
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,16 +39,36 @@ import com.example.listit.utils.getTheCurrentTheme
 
 
 @Composable
-fun AddItems(viewModel: HomeViewModel, onBack: () -> Unit){
+fun EditItems(viewModel: HomeViewModel, onBack: () -> Unit, id: Int){
     val context = LocalContext.current
     val color = getTheCurrentTheme(context)
     val currentColor = ThemeColor(color)
-    var title by remember { mutableStateOf("") }
-    var task by remember { mutableStateOf("") }
+    var title by remember {mutableStateOf("")}
+    var task: String? by remember {mutableStateOf("")}
+
+    val tasks = viewModel.task.collectAsState().value
+
+    LaunchedEffect(true) {
+        viewModel.loadTasks(context)
+    }
+
+    val taskItem = tasks.find { it.Id == id }
+
+    LaunchedEffect(true) {
+        if(taskItem != null){
+            task = taskItem.Task
+            title = taskItem.Title
+        }
+    }
+
+
+
     var errorText by remember { mutableStateOf(false) }
     Scaffold(){innerPadding->
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 2.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -74,7 +97,7 @@ fun AddItems(viewModel: HomeViewModel, onBack: () -> Unit){
                     modifier = Modifier
                         .clip(RoundedCornerShape(40.dp))
                         .fillMaxWidth(),
-                    value = task,
+                    value = task.toString(),
                     onValueChange = { task = it },
                     colors = TextFieldDefaults.colors(
                         unfocusedTextColor = currentColor.contentColor,
@@ -102,9 +125,10 @@ fun AddItems(viewModel: HomeViewModel, onBack: () -> Unit){
                             if (title.isEmpty()) {
                                 errorText = true
                             } else {
-                                SaveTask(
+                                UpdateTask(
                                     title = title,
                                     task = task,
+                                    Id = id,
                                     viewModel = viewModel,
                                     context = context
                                 )
@@ -116,7 +140,7 @@ fun AddItems(viewModel: HomeViewModel, onBack: () -> Unit){
                             containerColor = currentColor.containerColor
                         )
                     ) {
-                        Text("Save")
+                        Text("Update")
                     }
                     Button(
                         onClick = {

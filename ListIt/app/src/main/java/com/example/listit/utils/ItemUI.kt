@@ -1,5 +1,6 @@
 package com.example.listit.utils
 
+import android.R.attr.fontWeight
 import android.R.attr.onClick
 import android.R.attr.text
 import android.content.Context
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,11 +41,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.listit.R
+import com.example.listit.di.AppModule
 import com.example.listit.ui.home.DeleteTask
 import com.example.listit.ui.home.HomeViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 
 class ItemUI() {
     @Composable
@@ -53,7 +62,8 @@ class ItemUI() {
         title: String,
         task: String?,
         id : Int,
-        viewModel : HomeViewModel
+        viewModel: HomeViewModel,
+        onEditClick : () -> Unit
     ) {
         val context = LocalContext.current
         val ThemeColorCurrent = ThemeColor(currentTheme)
@@ -74,16 +84,24 @@ class ItemUI() {
             verticalAlignment = Alignment.CenterVertically
         ){
            Column(
+               modifier = Modifier.weight(1f).padding(start = 10.dp, bottom = 2.dp, top = 6.dp, end = if(showAllTextOptions)2.dp else 12.dp),
                horizontalAlignment = Alignment.CenterHorizontally,
                verticalArrangement = Arrangement.Center
            ) {
                 Text(
+                    style = TextStyle(
+                        fontWeight = FontWeight.W500,
+                        textAlign = TextAlign.Center
+                    ),
                     text = title,
                     color = ThemeColorCurrent.contentColor
                 )
                 if(showAllTextOptions){
                     if (task != null) {
                         Text(
+                            style = TextStyle(
+                                textAlign = TextAlign.Center
+                            ),
                             text = task,
                             color = ThemeColorCurrent.contentColor
                         )
@@ -91,14 +109,15 @@ class ItemUI() {
                 }
             }
            if(showAllTextOptions){
-               Spacer(Modifier.weight(1f))
                Row() {
                    IconButton(
                        colors = IconButtonDefaults.iconButtonColors(
                            contentColor = ThemeColorCurrent.contentColor,
                            containerColor = ThemeColorCurrent.containerColor
                        ),
-                       onClick = {}
+                       onClick = {
+                           onEditClick()
+                       }
                    ) {
                        Icon(
                            Icons.Default.Edit,

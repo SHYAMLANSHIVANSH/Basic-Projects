@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -27,7 +28,7 @@ fun HorizontalDrawer(
     val currentTheme = ThemeColor(color)
     NavigationBar(containerColor = currentTheme.containerColor, contentColor = currentTheme.contentColor) {
         NavigationBarItem(
-            selected = currentRoute == AllDestinations.Home_Route,
+            selected = currentRoute?.startsWith(AllDestinations.Home_Route) == true,
             onClick = {
                 navigateToHome()
             },
@@ -44,7 +45,7 @@ fun HorizontalDrawer(
             label = {Text("Home", color = currentTheme.contentColor)}
         )
         NavigationBarItem(
-            selected = currentRoute == AllDestinations.Theme_Route,
+            selected = currentRoute?.startsWith(AllDestinations.Theme_Route) == true,
             onClick = {
                 navigateToTheme()
             },
@@ -68,7 +69,7 @@ fun HorizontalDrawer(
 fun HorizontalDrawerTest(){
     val context = LocalContext.current
     HorizontalDrawer(
-        "Home",
+        AllDestinations.Home_Route,
         {},
         {},
         getTheCurrentTheme(context = context)

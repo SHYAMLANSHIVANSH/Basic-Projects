@@ -40,7 +40,7 @@ class ThemeItem {
     ){
         val theme =  ThemeColor(color)
 
-        Box(){
+        Box(modifier = Modifier){
             Card(
                 colors = CardDefaults.cardColors(
                     contentColor = theme.contentColor,

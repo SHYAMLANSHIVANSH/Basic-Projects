@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -67,10 +68,10 @@ fun CustomDrawer(
     color: String
 ){
     val currentTheme = ThemeColor(color)
-    NavigationRail(containerColor = currentTheme.containerColor, contentColor = currentTheme.contentColor) {
+    NavigationRail(containerColor = currentTheme.containerColor, contentColor = currentTheme.contentColor, modifier = Modifier.width(290.dp)) {
         Spacer(Modifier.weight(1f))
         CustomDrawerItem(
-            selected = currentRoute == AllDestinations.Home_Route,
+            selected = currentRoute?.startsWith(AllDestinations.Home_Route) == true,
             onClick = {
                 navigateToHome()
             },
@@ -87,7 +88,7 @@ fun CustomDrawer(
         Spacer(Modifier.weight(1f))
 
         CustomDrawerItem(
-            selected = currentRoute == AllDestinations.Theme_Route,
+            selected = currentRoute?.startsWith(AllDestinations.Theme_Route) == true,
             onClick = {
                 navigateToTheme()
             },
@@ -109,7 +110,7 @@ fun CustomDrawer(
 fun CustomDrawerTest(){
     val context = LocalContext.current
     CustomDrawer(
-        "Home",
+        AllDestinations.Home_Route,
         {},
         {},
         getTheCurrentTheme(context = context)

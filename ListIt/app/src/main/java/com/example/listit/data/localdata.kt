@@ -43,7 +43,7 @@ class localData(context: Context) : SQLiteOpenHelper(context ,User_Data.Database
         val db = this.writableDatabase
         db.delete(
             User_Data.Table_Name,
-            "id = ?",
+            "${User_Data.key} = ?",
             arrayOf(id.toString())
         )
         db.close()
@@ -56,7 +56,7 @@ class localData(context: Context) : SQLiteOpenHelper(context ,User_Data.Database
             put(User_Data.Title, localDataStoreClassReturn.Title)
             put(User_Data.Task, localDataStoreClassReturn.Task)
         }
-        db.update(User_Data.Table_Name, values, "Id = ?", arrayOf(localDataStoreClassReturn.Id.toString()))
+        db.update(User_Data.Table_Name, values, "${User_Data.key} = ?", arrayOf(localDataStoreClassReturn.Id.toString()))
         db.close()
     }
 

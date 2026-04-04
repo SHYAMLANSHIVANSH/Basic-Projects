@@ -1,5 +1,7 @@
 package com.example.listit.navigation
 
+import android.R.attr.label
+import android.R.attr.onClick
 import android.content.res.Resources
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.Icons
@@ -34,7 +36,7 @@ fun VerticalDrawer(
     ) {
         Spacer(Modifier.weight(1f))
         NavigationRailItem(
-            selected = currentRoute == AllDestinations.Home_Route,
+            selected = currentRoute?.startsWith(AllDestinations.Home_Route) == true,
             onClick = {
                 navigateToHome()
             },
@@ -52,7 +54,7 @@ fun VerticalDrawer(
         )
         Spacer(Modifier.weight(1f))
         NavigationRailItem(
-            selected = currentRoute == AllDestinations.Theme_Route,
+            selected = currentRoute?.startsWith(AllDestinations.Theme_Route) == true,
             onClick = {
                 navigateToTheme()
             },
@@ -77,7 +79,7 @@ fun VerticalDrawer(
 fun VerticalDrawerTest(){
     val context = LocalContext.current
     VerticalDrawer(
-        "Home",
+        AllDestinations.Home_Route,
         {},
         {},
         getTheCurrentTheme(context = context)
